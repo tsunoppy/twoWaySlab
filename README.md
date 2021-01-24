@@ -33,6 +33,29 @@
 - この時、級数の打ち切りは5としました。
 - 計算プログラムはクラスとして定義し、クラスの名前はHigashiとなっています。
 
+## Higashi.py
+
+### how to
+``` python
+obj = Higashi()
+obj.solve(Id_bound,lx,ly,t,w,creep,ec,nu,nmax,mmax)
+```
+### input parameter
+- Id_bound: Boundary condition (1-5)
+- lx,ly: Shorter & Longer span (m)
+- t: Slab thickness (mm)
+- w: distributed load (kN/m2)
+- creep: Creep Factore (16)
+- nu : Poisson's ratio (-)
+- nmax, mmax : Num. of the Fourier series (-)
+### return
+- by list = [Mx1, Mx2, My1, My2, dv]
+- Mx1: Negative Momend at Ext. End for the shorter span
+- Mx2: Positive Moment at Cent. for the shorter span
+- My1: Negative Momend at Ext. End for the longer span
+- My2: Positive Moment at Cent. for the longer span
+
+
 ## Module
 - numpy
 - sympy
