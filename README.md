@@ -42,6 +42,7 @@ obj.solve(Id_bound,lx,ly,t,w,creep,ec,nu,nmax,mmax)
 ```
 ### input parameter
 - Id_bound: Boundary condition (1-5)
+![Image](./images/bound.png)
 - lx,ly: Shorter & Longer span (m)
 - t: Slab thickness (mm)
 - w: distributed load (kN/m2)
