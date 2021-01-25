@@ -20,6 +20,7 @@ import matplotlib.pyplot as plt
 plt.rcParams['figure.figsize'] = 5, 5
 from sympy import var
 from sympy.plotting import plot3d
+from sympy import solve, simplify
 
 # 東博士による２重級数による平板解法
 # 建築構造学体系11、平板構造、東洋一、小森清司著
@@ -105,8 +106,8 @@ class Higashi:
         #    a = lx
         #  lamda = b/a
         elif Id_bound == 6:
-            lamda = ly/lx
-            md = self.m_3fix_1pin(self,lamda,nu,nmax,mmax)
+            lamda = ly/lx/2.0
+            md = self.m_3fix_1pin(lamda,nu,nmax,mmax)
 
 
         # Show Error Dialog
@@ -322,6 +323,14 @@ class Higashi:
         dwdy2 = sym.diff( ww, y, 2 )
         mx2 = -a**2* ( dwdx2 + nu * dwdy2 )
         my2 = -a**2* ( dwdy2 + nu * dwdx2 )
+
+        mx2_x0 = mx2.subs(y,0)/4.0
+        my2_0y = my2.subs(x,0)/4.0
+
+        mx2max = self.fxy_max(mx2_x0,50,0,a,"x")
+        my2max = self.fxy_max(my2_0y,50,0,b,"y")
+
+        #self.func_max(my2)
         """
         ## Reaction force v/(p*a)
         dwdx3   = sym.diff( ww, x, 3 )
@@ -335,19 +344,21 @@ class Higashi:
         w00 = ww.subs([(x,0.0),(y,0.0)])
         mx2_00 = mx2.subs([(x,0.0),(y,0.0)])
         my2_00 = my2.subs([(x,0.0),(y,0.0)])
+
         #vx_a0  = vx.subs([(x,a),(y,0.0)])
         #vy_0b  = vy.subs([(x,0.0),(y,b)])
         # ログの出力
         print('w(0,0) =', w00, w00*3/4)
-        print('mx2=', mx2_00/4)
-        print('my2=', my2_00/4)
+        print('mx2=', mx2max)
+        #print('my2=', my2_00/4)
+        print('my2=', my2max)
         #print('vx =', vx_a0/2)
         #print('vy =', vy_0b/2)
 
 
         #p = plot3d(-ww,(x,-a,a),(y,-b,b))
 
-        return mx2_00/4,my2_00/4,w00*3/4
+        return mx2max,my2max,w00*3/4
 
     ########################################################################
     # 3辺固定版
@@ -663,18 +674,26 @@ class Higashi:
         w00 = ww.subs([(x,0.0),(y,0.0)])
         mx2_00 = mx2.subs([(x,0.0),(y,0.0)])
         my2_00 = my2.subs([(x,0.0),(y,0.0)])
+
+        mx2_x0 = mx2.subs(y,0)
+        my2_0y = my2.subs(x,0)
+
+        mx2max = self.fxy_max(mx2_x0,50,0,a,"x")
+        my2max = self.fxy_max(my2_0y,50,0,b,"y")
+
         #vx_a0  = vx.subs([(x,a),(y,0.0)])
         #vy_0b  = vy.subs([(x,0.0),(y,b)])
         # ログの出力
         print('w(0,0) =', w00, w00*12)
-        print('mx2=', mx2_00)
-        print('my2=', my2_00)
+        print('mx2=', mx2_00,mx2max)
+        print('my2=', my2_00,my2max)
         #print('vx_a0 =', vx_a0)
         #print('vy_0b =', vy_0b)
         #print( 'mxa0', mx2.subs([(x,a),(y,0.0)]) )
         #print( 'my0b', my2.subs([(x,0),(y,b)]) )
 
-        return mx2_00,my2_00,w00*12
+        #return mx2_00,my2_00,w00*12
+        return mx2max,my2max,w00*12
 
     ########################################################################
     # 2辺固定版
@@ -1135,18 +1154,28 @@ class Higashi:
         w00 = ww.subs([(x,0.0),(y,0.0)])
         mx2_00 = mx2.subs([(x,0.0),(y,0.0)])
         my2_00 = my2.subs([(x,0.0),(y,0.0)])
+
+        mx2_x0 = mx2.subs(y,0)/4.0
+        my2_0y = my2.subs(x,0)/4.0
+
+        mx2max = self.fxy_max(mx2_x0,50,0,a,"x")
+        my2max = self.fxy_max(my2_0y,50,0,b,"y")
+
+
         #vx_a0  = vx.subs([(x,a),(y,0.0)])
         #vy_0b  = vy.subs([(x,0.0),(y,b)])
         # ログの出力
         print('w(0,0) =', w00, w00*12)
-        print('mx2=', mx2_00)
-        print('my2=', my2_00)
+        print('mx2=', mx2_00,mx2max)
+        print('my2=', my2_00,my2max)
         #print('vx_a0 =', vx_a0)
         #print('vy_0b =', vy_0b)
         #print( 'mxa0', mx2.subs([(x,a),(y,0.0)]) )
         #print( 'my0b', my2.subs([(x,0),(y,b)]) )
 
-        return mx2_00,my2_00,w00*12
+        #return mx2_00,my2_00,w00*12
+        return mx2max,my2max,w00*12
+
     # w(x,y) difinition for four side pin model
     ########################################################################
     def m_4pin(self,lamda,nu,nmax,mmax):
@@ -1234,7 +1263,7 @@ class Higashi:
             beta = (2.0*n-1)/(2.0*b) * pi
             beta_a = beta*a
             a1 = math.cosh(beta_a) * math.sinh(beta_a) - beta_a
-            a1 = - a1 / ( 2.0 * (math.sinh(beta_a))**2 ) * beta**2 * b**2
+            a1 = - a1 / 2.0 / (math.sinh(beta_a))**2  * beta**2 * b**2
 
             # making vector
             for j in range(1,nmax+1):
@@ -1245,17 +1274,20 @@ class Higashi:
 
             for m in range(1,mmax+1):
 
-                alpha = (2.0*m-1.0)/(2.0*a) *pi
-                b1 = 2.0 * ( -1.0 )**m *( -1.0 )**(n-1) * alpha * beta
-                b1 = b1 / ( ( alpha/beta) **2 + 1 ) **2 )
+                alpha = m/a *pi
+                b1 = 2.0 * ( -1.0 )**m *( -1.0 )**(n-1) * alpha * b
+                b1 = b1 / ( ( alpha/beta) **2 + 1.0 ) **2
                 vec.append(b1)
 
-            # ここまで組んだ 2021.01.17
+
             ########################################################################
 
             # make y vector
-            xtmp = 2.0 * (-1.0) ** n / (beta**4 * a**3 * b )
-            xtmp = xtmp*  ( math.cosh(beta_a) * math.sinh(beta_a) - beta_a ) / ( 2.0 * (math.cosh(beta_a))**2 )
+            xtmp = 2.0 * (-1.0) ** (n-1) / ( beta*b )
+            xtmp = xtmp *(b/a)**2
+            xtmp = xtmp * \
+                ( math.cosh(beta_a/2.0) * math.sinh(beta_a/2) - beta_a/2 )\
+                / (2.0*(math.cosh(beta_a/2.0))**2)
             y.append(xtmp)
 
             # make matrix
@@ -1271,23 +1303,27 @@ class Higashi:
 
             vec = []
 
-            alpha = (2.0*m-1.0)/(2.0*a) *pi
+            alpha = m/a *pi
             alpha_b = alpha * b
 
             b1 = math.cosh(alpha_b) * math.sinh(alpha_b) + alpha_b
-            b1 = b1/ ( 2.0 * ( math.cosh( alpha_b ) )**2 )
-            b1 = b1/ ( alpha * a )
+            b1 = b1/2.0/(math.cosh(alpha_b))**2
+            b1 = -b1 * alpha**2 * a**2
 
             for n in range(1,nmax+1):
 
                 beta = (2.0*n-1)/(2.0*b) * pi
-                a1 = 2.0 * ( -1.0 )**n *( -1.0 )**m * alpha * beta
-                a1 = a1/ ( a**2 * ( alpha**2 + beta**2 )**2 )
+                a1 = 2.0 * ( -1.0 )**n *( -1.0 )**(m-1) * beta * a
+                a1 = a1/ ( 1.0 + (beta/alpha)**2 )**2
                 vec.append(a1)
 
             # make y vector
-            xtmp = 2.0 * (-1.0)**m / ( alpha**4 * a**4 )
-            xtmp = xtmp * ( math.cosh(alpha_b) * math.sinh(alpha_b) - alpha_b )/ ( 2.0* ( math.cosh(alpha_b) )**2 )
+            xtmp = 2.0 * ( 1.0 - (-1.0)**m )
+            xtmp = xtmp/(alpha*a)
+            xtmp = xtmp *\
+                ( math.cosh(alpha_b)*math.sinh(alpha_b) - alpha_b )\
+                / 2.0 / (math.cosh(alpha_b))**2
+
             y.append(xtmp)
 
 
@@ -1319,7 +1355,7 @@ class Higashi:
         # print calculation log
         print('# ', 'Solve, three side fix + one side pin supported plate')
         print()
-        print('ly/lx =', lamda, 'nu=', nu)
+        print('ly/lx = b/a = ', lamda, 'nu=', nu)
         print('nmax =', nmax, 'mmax', mmax)
         print()
         print('A =', aaa)
@@ -1334,18 +1370,184 @@ class Higashi:
         print()
 
         # たわみ関数の呼び出
-        #tmpData = self.w_4fix(lamda,nmax,mmax,mx,nu)
+        tmpData = self.w_3fix_1pin(lamda,nmax,mmax,mx,nu)
 
-        #return mx_end/4,tmpData[0],my_end/4,tmpData[1],tmpData[2]
+        return mx_end,tmpData[0],my_end,tmpData[1],tmpData[2]
+
+    # w(x,y) difinition for three side fix with one side pin model
+    # p115
+    ########################################################################
+    def w_3fix_1pin(self,lamda,nmax,mmax,mx,nu):
+
+        # lamda:         ly/lx
+        # nmax, mmax:    フーリエ級数の打ち切り
+        # mx:            [man(n=1,2,...nmax),mam(m=1,2,....mmax)]
+
+        # ２変数の定義
+        sym.var('x y', real = True)
+
+        # 初期条件
+        pi = math.pi
+        a = 1.0
+        b = lamda * a
+        #print("lamda",lamda)
+
+        # たわみ関数の計算
+        # 計算は w * (D/pa**4) を計算
+        ww = 0.0
+
+        for n in range(1,nmax+1):
+
+            beta = ( 2.0*n - 1.0 )/ (2.0*b) * pi
+            beta_a = beta*a
+
+            coef = ( beta_a * sym.coth(beta_a) * sym.sinh(beta*x) - beta*x * sym.cosh(beta*x) ) \
+                /2/sym.sinh(beta_a) * mx[n-1] / beta**2 / a**2 * sym.cos(beta*y)
+
+            ww = ww + coef
+
+        for m in range(1,mmax+1):
+            alpha = m/a * pi
+            alpha_b = alpha*b
+
+            coef = ( alpha_b * sym.tanh(alpha_b) * sym.cosh(alpha*y) - alpha*y * sym.sinh(alpha*y) )\
+                /2/sym.cosh(alpha_b) * mx[nmax+m-1] / alpha**2 / a**2 * sym.sin(alpha*x)
+
+            ww = ww + coef
+
+        # 荷重項
+        for n in range(1,nmax+1):
+            for m in range(1,mmax+1):
+                alpha = m/a * pi
+                beta  = ( 2.0*n - 1.0 )/ (2.0*b) * pi
+
+                coef = 4.0/(a**5*b)
+                coef = coef * (1.0-(-1.0)**m) * (-1.0)**(n-1)
+                coef = coef/( alpha*beta* (alpha**2 + beta**2)**2 )
+                coef = coef * sym.sin(alpha*x) * sym.cos(beta*y)
+                ww = ww + coef
+
+        # 応力の計算
+        ## Bending Moment m/(p*a**2)
+        dwdx2 = sym.diff( ww, x, 2 )
+        dwdy2 = sym.diff( ww, y, 2 )
+        mx2 = -a**2* ( dwdx2 + nu * dwdy2 )
+        my2 = -a**2* ( dwdy2 + nu * dwdx2 )
+
+        mx2_x0 = mx2.subs(y,0)
+        my2_05y = my2.subs(x,0.5)
+
+        print(mx2_x0)
+        #mx2max = self.fxy_max(mx2_x0,50,0,a,"x")
+        #my2max = self.fxy_max(my2_05y,50,0,b,"y")
+        mx2max = 0.0
+        my2max = 0.0
+
+        #self.func_max(my2)
+        """
+        ## Reaction force v/(p*a)
+        dwdx3   = sym.diff( ww, x, 3 )
+        dwdxdy2 = sym.diff( ww, x, y, 2)
+        dwdy3   = sym.diff( ww, y, 3 )
+        dwdydx2 = sym.diff( ww, x, 2, y )
+        vx      = -a**3 * ( dwdx3 + (2.0-nu) * dwdxdy2 )
+        vy      = -a**3 * ( dwdy3 + (2.0-nu) * dwdydx2 )
+        """
+        # 結果の整理
+        w00 = ww.subs([(x,0.5*a),(y,0.0)])
+        mx2_00 = mx2.subs([(x,0.0),(y,0.0)])
+        my2_00 = my2.subs([(x,0.0),(y,0.0)])
+
+        #vx_a0  = vx.subs([(x,a),(y,0.0)])
+        #vy_0b  = vy.subs([(x,0.0),(y,b)])
+        # ログの出力
+        print('w(0,0) =', w00, w00*12)
+        print('mx2=', mx2max)
+        #print('my2=', my2_00/4)
+        print('my2=', my2max)
+        #print('vx =', vx_a0/2)
+        #print('vy =', vy_0b/2)
+
+
+        #p = plot3d(-ww,(x,-a,a),(y,-b,b))
+
+        return mx2max,my2max,w00*12
+
+    def func_max(self,fxy):
+
+        #
+        print("Cal, f_x")
+        f_x = sym.diff( fxy, x, 1 )
+        print("Cal, f_y")
+        f_y = sym.diff( fxy, y, 1 )
+
+        print("Cal, f_x = f_y = 0")
+        points = solve([f_x,f_y],[x,y])
+        #points = list(map(lambda x:simplify(x),points))
+        #print(points)
+        for point in points:
+            #print(point[0])
+            #print(point[1])
+            xc = float(point[0])
+            yc = float(point[1])
+            #print(fxy.subs([(x,point[0]),(y,point[1])]))
+            print("xc=",xc,"yc=",yc)
+            print("f(xc,yc)=",fxy.subs([(x,xc),(y,yc)]))
+
+    def fxy_max(self,fxy,ndim,x1,x2,index):
+
+        # index = "x" or "y"
+
+        # Preparation
+        dx = (x2-x1)/ndim
+        print( " dx = ",dx)
+        print(fxy)
+
+        # Calculation
+        fmax = 0.0
+
+        if index == "y":
+            for i in range(0,ndim+1):
+                yc = x1 + i * dx
+                f = fxy.subs(y,yc)
+                print("{:.2f}".format(yc),"{:.5f}".format(f))
+
+                if f >= fmax:
+                    fmax = f
+                    yp = yc
+            print("{:.2f}".format(yp/x2),"{:.5f}".format(fmax))
+
+        elif index == "x":
+            for i in range(0,ndim+1):
+                xc = x1 + i * dx
+                f = fxy.subs(x,xc)
+                print("{:.2f}".format(xc),"{:.5f}".format(f))
+                if f >= fmax:
+                    fmax = f
+                    xp = xc
+            print("{:.2f}".format(xp/x2),"{:.5f}".format(fmax))
+        else:
+            print("Error fxy_max, please select index as 'x' or 'y' ")
+
+        return fmax
+
 ########################################################################
 # End Class
-"""
+
 obj = Higashi()
-lamda = 1.0
+lamda = 1.5
 nu = 0.0
-nmax = 4
-mmax = 4
+nmax = 5
+mmax = 5
 #obj.m_4fix(lamda,nu,nmax,mmax)
-obj.m_3fix(lamda,nu,nmax,mmax)
-#obj.m_2fix(lamda,nu,nmax,mmax)
+#obj.m_3fix(lamda,nu,nmax,mmax)
+#obj.m_2fix(lamda,nu,nmax,mmax,1)
+
+#obj.m_3fix_1pin(lamda,nu,nmax,mmax)
+"""
+# ２変数の定義
+sym.var('x y', real = True)
+# 初期条件
+fxy = 2*x**3 + 4*x*y**2 - 10*x*y + y**2
+obj.func_max(fxy)
 """
