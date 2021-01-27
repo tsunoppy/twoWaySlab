@@ -1435,13 +1435,13 @@ class Higashi:
         my2 = -a**2* ( dwdy2 + nu * dwdx2 )
 
         mx2_x0 = mx2.subs(y,0)
-        my2_05y = my2.subs(x,0.5)
+        my2_05y = my2.subs(x,float(0.5*a))
 
         print(mx2_x0)
-        #mx2max = self.fxy_max(mx2_x0,50,0,a,"x")
-        #my2max = self.fxy_max(my2_05y,50,0,b,"y")
-        mx2max = 0.0
-        my2max = 0.0
+        mx2max = self.fxy_max(mx2_x0,50,0.0000001,a,"x")
+        my2max = self.fxy_max(my2_05y,50,0.000001,b,"y")
+        #mx2max = 0.0
+        #my2max = 0.0
 
         #self.func_max(my2)
         """
@@ -1535,7 +1535,7 @@ class Higashi:
 # End Class
 
 obj = Higashi()
-lamda = 1.5
+lamda = 1.0
 nu = 0.0
 nmax = 5
 mmax = 5
