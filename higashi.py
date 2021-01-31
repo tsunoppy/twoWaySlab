@@ -1531,6 +1531,50 @@ class Higashi:
 
         return fmax
 
+    ########################################################################
+    # 2辺固定2辺支持版
+    # p120, ３型による解
+    def m_2fix_2pin(self,lamda,nu,nmax,mmax):
+        # mmax はダミー
+        # 初期計算
+        pi = math.pi
+        a = 1.0
+        b = lamda * a
+        y = []
+        mx = []
+
+        for n in range(1,nmax+1):
+
+
+            beta = (2.0*n-1)/(2.0*b) * pi
+            beta_a = beta*a
+
+            a1 = 2.0*(-1.0)**n / a**2 / beta**3 / b \
+                *( math.cosh(beta_a)*math.sinh(beta_a) - beta_a )\
+                /( math.cosh(beta_a)*math.sinh(beta_a) + beta_a )
+
+            mx.append(a1)
+
+        mx_end = 0
+        my_end = 0
+        for n in range(1,nmax+1):
+            mx_end = mx_end + mx[n-1]
+
+        # print calculation log
+        print('# ', 'Solve, two side fix w/ two side pin plate')
+        print()
+        print('ly/lx =', lamda, 'nu=', nu)
+        print('nmax =', nmax, 'mmax = 0(No Need)')
+        print()
+        print('mx = ', mx)
+        print('mx1 = ', mx_end/4)
+        print('my1 = ', 0.0)
+        print()
+
+        # たわみ関数の呼び出
+        #tmpData = self.w_4fix(lamda,nmax,mmax,mx,nu)
+
+        #return mx_end/4,tmpData[0],my_end/4,tmpData[1],tmpData[2]
 ########################################################################
 # End Class
 
@@ -1544,6 +1588,7 @@ mmax = 5
 #obj.m_2fix(lamda,nu,nmax,mmax,1)
 
 #obj.m_3fix_1pin(lamda,nu,nmax,mmax)
+obj.m_2fix_2pin(lamda,nu,nmax,mmax)
 """
 # ２変数の定義
 sym.var('x y', real = True)

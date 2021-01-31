@@ -57,6 +57,24 @@ obj.solve(Id_bound,lx,ly,t,w,creep,ec,nu,nmax,mmax)
 - My2: Positive Moment at Cent. for the longer span
 
 
+## aijRc.py
+### how to
+``` python
+obj = Aij_rc_set()
+obj.Ra(index)
+obj.Ra_p(index,pitch)
+obj.Ec(fc,gamma)
+```
+### input
+- index: "D10", "D13", ......, "D41"
+- pitch: "200", "100"
+- fc: compressive concrete strength, N/mm2
+- gamma: concrete dry density, kN/m3
+### return
+- obj.Ra: Area of the bar
+- obj.Ra_p: Area of the bar within 1.0 m
+- Ec: young modulus by AIJ Standard
+
 ## Module
 - numpy
 - sympy
