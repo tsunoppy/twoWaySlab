@@ -1,21 +1,17 @@
 
-# twoWaySlab
+# twoWaySlab/２方向スラブの設計
 
-## Features
-- Calculate deflection and stress of the two way RC slab
-- Solve plate eq. directly by the method of Dr.Higashi
-
+## GUI by wxpython
 ![Image](./images/twoWaySlab.png)
 
-## Souce
-### rcSlab.py
- Main Program
-### aijRc.py
- Propeties of the reinforcement in japanese code.
-### makereport.py
- Making pdf report by repotlab module
-### Higashi.py
- Calculation of the two way plate
+## Features
+- Follow Japanese Code
+- Calculate deflection and stress of the two way RC slab
+- Solve plate eq. directly by Fourier Method.
+- Import/Export by csv format.
+- Export pdf file report.
+
+![Image](./images/pdf_image.png)
 
 ## Develop Memo
 
@@ -33,7 +29,38 @@
 - この時、級数の打ち切りは5としました。
 - 計算プログラムはクラスとして定義し、クラスの名前はHigashiとなっています。
 
+## Souce
+```
+├── README.md
+├── aijRc.py
+├── report.py
+├── twoWaySlab.py
+├── gui.py
+├── higashi.py
+├── gui.wxg
+├── db
+│   ├── rcslab.txt
+├── fonts
+│   ├── GenShinGothic-Monospace-Medium.ttf
+├── images
+│   ├── 4sideFix.jpg
+│   ├── 4sideFix.png
+│   ├── m2.jpg
+│   ├── m2_2pin.jpg
+│   ├── m2_2pin2.jpg
+│   ├── m2_2pin3.jpg
+│   ├── m3-1pin.jpg
+│   ├── m3-1pin2.jpg
+│   ├── m3_1.jpg
+│   ├── m3_1pin.jpg
+│   ├── m3_2.jpg
+│   ├── m4pin.jpg
+```
+## twoWaySlab.py
+ Main Program
+
 ## Higashi.py
+ Calculation of the two way plate
 
 ### how to
 ``` python
@@ -55,7 +82,6 @@ obj.solve(Id_bound,lx,ly,t,w,creep,ec,nu,nmax,mmax)
 - Mx2: Positive Moment at Cent. for the shorter span
 - My1: Negative Momend at Ext. End for the longer span
 - My2: Positive Moment at Cent. for the longer span
-
 
 ## aijRc.py
 ### how to
@@ -80,3 +106,21 @@ obj.Ec(fc,gamma)
 - sympy
 - pandas
 - reportlab
+
+## report.py
+use "./fonts/GenshinGothic-Monospace-Medium.ttf" for japanese
+https://gammasoft.jp/blog/pdf-japanese-font-by-python/
+``` python
+self.FONT_NAME = "GenShinGothic"
+GEN_SHIN_GOTHIC_MEDIUM_TTF = "./fonts/GenShinGothic-Monospace-Medium.ttf"
+# フォント登録
+pdfmetrics.registerFont(TTFont('GenShinGothic', GEN_SHIN_GOTHIC_MEDIUM_T
+```
+
+# Log
+## 2020/02/01
+Csv入出力の実装
+- OnImport
+- OnEport
+## 2020/02/03
+pdfレポートの作成実装
