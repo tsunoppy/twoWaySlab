@@ -124,3 +124,15 @@ Csv入出力の実装
 - OnEport
 ## 2020/02/03
 pdfレポートの作成実装
+
+# For Windows
+
+by power shell
+``` DOS
+> pyinstaller main.py --onefile --noconsole --icon=images/plate.ico
+> ./dist/twoWaySlab/twoWaySlab.exe
+> mv ./images ./dist/twoWaySlab/twoWaySlab.exe
+> mv ./fonts ./dist/twoWaySlab/twoWaySlab.exe
+```
+
+Check Release, and click main/rigidWink.exe!
