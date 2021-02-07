@@ -125,9 +125,16 @@ Csv入出力の実装
 ## 2020/02/03
 pdfレポートの作成実装
 
-# For Windows
+## Run
+### For Mac & Linux
+Download souse code, then,
+``` shell
+python3 ./twoWaySlab.py
+```
 
-by power shell
+### For Windows
+
+By power shell
 ``` DOS
 > pyinstaller main.py --onefile --noconsole --icon=images/plate.ico
 > ./dist/twoWaySlab/twoWaySlab.exe
