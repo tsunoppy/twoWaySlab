@@ -136,7 +136,7 @@ python3 ./twoWaySlab.py
 
 By power shell
 ``` DOS
-> pyinstaller main.py --onefile --noconsole --icon=images/plate.ico
+> pyinstaller main.py --onefile --noconsole --icon=icons/twoWay_Icon.ico
 > ./dist/twoWaySlab/twoWaySlab.exe
 > mv ./images ./dist/twoWaySlab/twoWaySlab.exe
 > mv ./fonts ./dist/twoWaySlab/twoWaySlab.exe

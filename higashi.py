@@ -613,7 +613,7 @@ class Higashi:
         # たわみ関数の呼び出し
         tmpData = self.w_3fix(lamda,nmax,mmax,mx,nu)
 
-        return mx_end/4,tmpData[0],my_end/4,tmpData[1],tmpData[2]
+        return mx_end,tmpData[0],my_end,tmpData[1],tmpData[2]
 
     # w(x,y) difinition for three side fix model
     ########################################################################
@@ -1396,7 +1396,8 @@ class Higashi:
             #print('n=',n,mx[n-1])
 
         for m in range(1,mmax+1):
-            my_end = my_end + mx[nmax+m-1]
+            alpha = m*pi/a
+            my_end = my_end + mx[nmax+m-1] * math.sin(alpha*0.5*a)
             #print('m=',m,mx[nmax+m-1])
 
         # print calculation log

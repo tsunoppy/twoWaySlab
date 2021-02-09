@@ -793,7 +793,7 @@ class MyFrame2(gui.MyFrame2):
             self.text_ctrl_reqt.SetValue("{:.0f}".format(md[4]))
             self.text_ctrl_tbyl.SetValue('1/'+"{:.0f}".format(lx*1000/t))
         else:
-            self.text_ctrl_def.SetValue("{:.0f}".format(md[4]))
+            self.text_ctrl_def.SetValue("{:.1f}".format(md[4]))
             self.text_ctrl_dBySpan.SetValue('1/'+"{:.0f}".format(lx*1000/md[4]))
             self.text_ctrl_reqt.SetValue("-")
             self.text_ctrl_tbyl.SetValue('1/'+"{:.0f}".format(lx*1000/t))
