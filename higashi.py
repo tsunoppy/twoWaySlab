@@ -149,7 +149,7 @@ class Higashi:
         #  lamda = b/a
         # need replace lx & ly
         elif Id_bound == 10:
-            lamda = ly/lx
+            lamda = lx/ly
             md = self.m_2fix_2pin(lamda,nu,nmax,mmax)
 
         # Show Error Dialog
@@ -1674,11 +1674,11 @@ class Higashi:
         mx2 = -a**2* ( dwdx2 + nu * dwdy2 )
         my2 = -a**2* ( dwdy2 + nu * dwdx2 )
 
-        #mx2_x0 = mx2.subs(y,0)
+        mx2_x0 = mx2.subs(y,0)/4
         my2_0y = my2.subs(x,0)/4
 
         #print(mx2_x0)
-        #mx2max = self.fxy_max(mx2_x0,50,0.0000001,a,"x")
+        mx2max = self.fxy_max(mx2_x0,50,0,a,"x")
         my2max = self.fxy_max(my2_0y,50,0,b,"y")
         #mx2max = 0.0
         #my2max = 0.0
@@ -1697,7 +1697,7 @@ class Higashi:
         w00 = ww.subs([(x,0.5*a),(y,0.0)])
         mx2_00 = mx2.subs([(x,0.0),(y,0.0)])
         my2_00 = my2.subs([(x,0.0),(y,0.0)])
-        mx2max = mx2_00/4
+        #mx2max = mx2_00/4
 
         #vx_a0  = vx.subs([(x,a),(y,0.0)])
         #vy_0b  = vy.subs([(x,0.0),(y,b)])

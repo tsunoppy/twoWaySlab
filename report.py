@@ -273,6 +273,7 @@ class Report():
             """
             line = linecache.getline('./db/rcslab.txt', index+i+1 )
             data = line.split(', ')
+            linecache.clearcache()
             #f.close()
             #data = tmpData
             self.create_row( c, i, data )

@@ -617,11 +617,12 @@ class MyFrame2(gui.MyFrame2):
 
             try:
                 num = int( self.text_ctrl_idTotal.GetValue() )
+                print(num)
                 title = "none"
                 #for i in range(0,num):
                 obj = report.Report()
                 obj.create_pdf(num,pathname,title)
-
+                del obj
             except IOError:
                 wx.LogError("Cannot save current data in file '%s'." % pathname)
 
