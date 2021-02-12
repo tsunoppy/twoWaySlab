@@ -395,7 +395,7 @@ class Higashi:
         #vx_a0  = vx.subs([(x,a),(y,0.0)])
         #vy_0b  = vy.subs([(x,0.0),(y,b)])
         # ログの出力
-        print('w(0,0) =', w00, w00*3/4)
+        print('w(0,0) =', w00, "->" , w00*3/4)
         print('mx2=', mx2max)
         #print('my2=', my2_00/4)
         print('my2=', my2max)
@@ -725,6 +725,7 @@ class Higashi:
         mx2_x0 = mx2.subs(y,0)
         my2_0y = my2.subs(x,0)
 
+        print('-- Cal mx2max(x,0), my2max(0,y)')
         mx2max = self.fxy_max(mx2_x0,50,0,a,"x")
         my2max = self.fxy_max(my2_0y,50,0,b,"y")
 
@@ -1166,7 +1167,7 @@ class Higashi:
         # gamma 項
         # ここがw_3fixと異なる。
         if index == 0:
-            print(mx[2*nmax+2*mmax]) # check
+            #print(mx[2*nmax+2*mmax]) # check
             ww = ww + (a-x)*(b-y) / a**2 * mx[2*nmax+2*mmax]
 
         # 荷重項
@@ -1205,6 +1206,7 @@ class Higashi:
         mx2_x0 = mx2.subs(y,0)/4.0
         my2_0y = my2.subs(x,0)/4.0
 
+        print('-- Cal mx2max(x,0), my2max(0,y)')
         mx2max = self.fxy_max(mx2_x0,50,0,a,"x")
         my2max = self.fxy_max(my2_0y,50,0,b,"y")
 
@@ -1485,7 +1487,8 @@ class Higashi:
         mx2_x0 = mx2.subs(y,0)
         my2_05y = my2.subs(x,float(0.5*a))
 
-        print(mx2_x0)
+        #print(mx2_x0)
+        print('-- Cal mx2max(x,0), my2max(0.5a,y)')
         mx2max = self.fxy_max(mx2_x0,50,0.0000001,a,"x")
         my2max = self.fxy_max(my2_05y,50,0.000001,b,"y")
         #mx2max = 0.0
@@ -1549,7 +1552,7 @@ class Higashi:
         # Preparation
         dx = (x2-x1)/ndim
         print( " dx = ",dx)
-        print(fxy)
+        #print(fxy)
 
         # Calculation
         fmax = 0.0
@@ -1558,7 +1561,7 @@ class Higashi:
             for i in range(0,ndim+1):
                 yc = x1 + i * dx
                 f = fxy.subs(y,yc)
-                print("{:.2f}".format(yc),"{:.5f}".format(f))
+                #print("{:.2f}".format(yc),"{:.5f}".format(f))
 
                 if f >= fmax:
                     fmax = f
@@ -1569,7 +1572,7 @@ class Higashi:
             for i in range(0,ndim+1):
                 xc = x1 + i * dx
                 f = fxy.subs(x,xc)
-                print("{:.2f}".format(xc),"{:.5f}".format(f))
+                #print("{:.2f}".format(xc),"{:.5f}".format(f))
                 if f >= fmax:
                     fmax = f
                     xp = xc
@@ -1622,7 +1625,7 @@ class Higashi:
         # たわみ関数の呼び出
         tmpData = self.w_2fix_2pin(lamda,nmax,mmax,mx,nu)
 
-        print( mx_end/4,tmpData[0],my_end/4,tmpData[1],tmpData[2])
+        #print( mx_end/4,tmpData[0],my_end/4,tmpData[1],tmpData[2])
         return mx_end/4,tmpData[0],my_end/4,tmpData[1],tmpData[2]
 
     # w(x,y) difinition for two side fix with two side pin model
@@ -1679,7 +1682,9 @@ class Higashi:
         mx2_x0 = mx2.subs(y,0)/4
         my2_0y = my2.subs(x,0)/4
 
+
         #print(mx2_x0)
+        print('-- Cal mx2max(x,0), my2max(0,y)')
         mx2max = self.fxy_max(mx2_x0,50,0,a,"x")
         my2max = self.fxy_max(my2_0y,50,0,b,"y")
         #mx2max = 0.0
@@ -1911,6 +1916,7 @@ class Higashi:
         my2_05y = my2.subs(x,float(0.5*a))
 
         #print(mx2_x0)
+        print('-- Cal mx2max(x,0.5b), my2max(0.5a,y)')
         mx2max = self.fxy_max(mx2_x05,50,0.0000001,a,"x")
         my2max = self.fxy_max(my2_05y,50,0.000001,b,"y")
         #mx2max = 0.0
@@ -1989,7 +1995,7 @@ class Higashi:
 
         # たわみ関数の呼び出
         tmpData = self.w_1fix_3pin(lamda,nmax,mmax,mx,nu)
-        print( mx_end,tmpData[0],0.0,tmpData[1],tmpData[2] )
+        #print( mx_end,tmpData[0],0.0,tmpData[1],tmpData[2] )
         return mx_end,tmpData[0],0.0,tmpData[1],tmpData[2]
 
     # w(x,y) difinition
@@ -2047,6 +2053,7 @@ class Higashi:
         my2_0y = my2.subs(x,0.5*a)
 
         #print(mx2_x0)
+        print('-- Cal mx2max(x,0), my2max(0.5a,y)')
         mx2max = self.fxy_max(mx2_x0,50,0.00000001,a,"x")
         my2max = self.fxy_max(my2_0y,50,0.00000001,b,"y")
         #mx2max = 0.0

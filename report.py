@@ -306,7 +306,7 @@ class Report():
         #データを描画
         ########################################################################
         inputf = './db/input.txt'
-        f = open(inputf,'r')
+        f = open(inputf,'r', encoding='utf-8')
         tmpData = []
         while True:
             line = f.readline()

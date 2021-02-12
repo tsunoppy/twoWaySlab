@@ -20,7 +20,7 @@ import higashi
 import wx
 import os
 import csv
-import pandas as pd
+#import pandas as pd
 import linecache
 #from shutil import make_archive
 
@@ -28,8 +28,8 @@ import linecache
 import gui
 
 # excel format
-import openpyxl
-from openpyxl.utils import get_column_letter # 列幅の指定 2020/05/27
+#import openpyxl
+#from openpyxl.utils import get_column_letter # 列幅の指定 2020/05/27
 
 # pdf export
 import report
@@ -124,7 +124,7 @@ class MyFrame2(gui.MyFrame2):
         outFile = './db/rcslab.txt'
         index = 0
         if idTotal != '0':
-            with open(outFile) as f:
+            with open(outFile, encoding='utf-8') as f:
                 for row in csv.reader(f):
                     self.list_ctrl_output.InsertItem(index, index)
                     self.list_ctrl_output.SetItem(index, 0, str(int(index+1)))
@@ -142,7 +142,7 @@ class MyFrame2(gui.MyFrame2):
         id_move2 = int(self.text_ctrl_move2.GetValue())
         data = []
 
-        f = open('./db/rcslab.txt')
+        f = open('./db/rcslab.txt', encoding='utf-8')
 
         for i in range(0,idTotal):
             line = f.readline()
@@ -150,7 +150,7 @@ class MyFrame2(gui.MyFrame2):
         f.close()
 
         outFile = './db/rcslab.txt'
-        fout = open(outFile, "w")
+        fout = open(outFile, "w", encoding='utf-8')
 
         if id_move2 < id_move1:
             for i in range(0,idTotal):
@@ -189,7 +189,7 @@ class MyFrame2(gui.MyFrame2):
 
             data = []
 
-            f = open('./db/rcslab.txt')
+            f = open('./db/rcslab.txt', encoding='utf-8')
 
             for i in range(0,idTotal):
                 line = f.readline()
@@ -197,7 +197,7 @@ class MyFrame2(gui.MyFrame2):
             f.close()
 
             outFile = './db/rcslab.txt'
-            fout = open(outFile, "w")
+            fout = open(outFile, "w", encoding='utf-8')
 
             for i in range(0,idTotal):
                 if id_remove != i+1:
@@ -582,9 +582,9 @@ class MyFrame2(gui.MyFrame2):
         ####################
         outFile = './db/rcslab.txt'
         if idTotal == '0':
-            fout = open(outFile, "w")
+            fout = open(outFile, "w", encoding='utf-8')
         else:
-            fout = open(outFile, "a")
+            fout = open(outFile, "a", encoding='utf-8')
 
         for i in range(len(data)):
             fout.writelines(str(data[i]))
@@ -642,9 +642,9 @@ class MyFrame2(gui.MyFrame2):
             pathname = fileDialog.GetPath()
             try:
                 input_path = './db/rcslab.txt'
-                with open(input_path) as f:
+                with open(input_path, encoding='utf-8') as f:
                     s = f.read()
-                with open(pathname, 'w') as file:
+                with open(pathname, 'w', encoding='utf-8') as file:
                     file.write(s)
             except IOError:
                 wx.LogError("Cannot save current data in file '%s'." % pathname)
@@ -661,16 +661,16 @@ class MyFrame2(gui.MyFrame2):
             # save the current contents in the file
             pathname = fileDialog.GetPath()
             try:
-                with open(pathname) as f:
+                with open(pathname, encoding='utf-8') as f:
                     s = f.read()
 
                 input_path = './db/rcslab.txt'
-                with open(input_path, 'w') as file:
+                with open(input_path, 'w', encoding='utf-8') as file:
                     file.write(s)
 
                 # Listの読み込み
                 line_count = 0
-                with open(input_path) as f:
+                with open(input_path, encoding='utf-8') as f:
                     for line in f:
                         line_count += 1
                 print("Success Import!!!")
