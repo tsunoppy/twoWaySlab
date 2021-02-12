@@ -170,9 +170,9 @@ class Higashi:
             dv = creep*md[4]*(w/1000.0)*(lx*1000.0)**4/(ec*t**3)
             return abs(md[0]*w*lx**2), md[1]*w*lx**2, \
                 abs(md[2]*w*lx**2), md[3]*w*lx**2, dv
-    ########################################################################
-    # ４辺固定版
-    # p81, ３型による解
+        ########################################################################
+        # ４辺固定版
+        # p81, ３型による解
     def m_4fix(self,lamda,nu,nmax,mmax):
 
         # 初期計算
@@ -471,7 +471,7 @@ class Higashi:
                 aaa = np.array(vec)
             else:
                 aaa = np.vstack((aaa,np.array(vec)))
-            #print(vec)
+                #print(vec)
 
         # nに関する連立方程式２
         for n in range(1,nmax+1):
@@ -692,17 +692,17 @@ class Higashi:
                 coef = coef/( alpha*beta* (alpha**2 + beta**2)**2 )
                 coef = coef * sym.cos(alpha*x) * sym.cos(beta*y)
                 ww = ww + coef
-            """
-            beta  = ( 2.0*n - 1.0 )/ (2.0*b) * pi
+                """
+                beta  = ( 2.0*n - 1.0 )/ (2.0*b) * pi
 
             coef = 2.0*(-1.0)**(n-1)/ beta**5 / a**4/ b
-            coef = coef* ( 2.0*sym.cosh(beta*a) - ( beta*a*sym.tanh(beta*a) + 2.0 )*sym.cosh(beta*x) + beta*x*sym.sinh(beta*x) )
-            coef = coef / 2.0/ sym.cosh(beta*a)
-            coef = coef * sym.cos(beta*y)
-            ww = ww + coef
-            """
-        # 応力の計算
-        ## Bending Moment m/(p*a**2)
+                coef = coef* ( 2.0*sym.cosh(beta*a) - ( beta*a*sym.tanh(beta*a) + 2.0 )*sym.cosh(beta*x) + beta*x*sym.sinh(beta*x) )
+                coef = coef / 2.0/ sym.cosh(beta*a)
+                coef = coef * sym.cos(beta*y)
+                ww = ww + coef
+                """
+                # 応力の計算
+                ## Bending Moment m/(p*a**2)
         print('-- Cal mx(x,y), my(x,y)')
         dwdx2 = sym.diff( ww, x, 2 )
         dwdy2 = sym.diff( ww, y, 2 )
@@ -815,7 +815,7 @@ class Higashi:
                 aaa = np.array(vec)
             else:
                 aaa = np.vstack((aaa,np.array(vec)))
-            #print(vec)
+                #print(vec)
 
         # nに関する連立方程式２ (3.56)
         for n in range(1,nmax+1):
@@ -1029,7 +1029,7 @@ class Higashi:
                 d1 = (1.0+nu)*math.cosh(alpha_b)*math.sinh(alpha_b) + (1.0-nu)*alpha_b
                 d1 = -d1/2.0/(math.cosh(alpha_b))**2 / (alpha*a)
                 vec.append(d1)
-            vec.append(b/a)
+                vec.append(b/a)
 
             xtmp = 0.0
             for m in range(1,mmax+1):
@@ -1622,6 +1622,7 @@ class Higashi:
         # たわみ関数の呼び出
         tmpData = self.w_2fix_2pin(lamda,nmax,mmax,mx,nu)
 
+        print( mx_end/4,tmpData[0],my_end/4,tmpData[1],tmpData[2])
         return mx_end/4,tmpData[0],my_end/4,tmpData[1],tmpData[2]
 
     # w(x,y) difinition for two side fix with two side pin model
@@ -1695,7 +1696,8 @@ class Higashi:
         vy      = -a**3 * ( dwdy3 + (2.0-nu) * dwdydx2 )
         """
         # 結果の整理
-        w00 = ww.subs([(x,0.5*a),(y,0.0)])
+        #w00 = ww.subs([(x,0.5*a),(y,0.0)])
+        w00 = ww.subs([(x,0.0),(y,0.0)])
         mx2_00 = mx2.subs([(x,0.0),(y,0.0)])
         my2_00 = my2.subs([(x,0.0),(y,0.0)])
         #mx2max = mx2_00/4
@@ -1703,7 +1705,7 @@ class Higashi:
         #vx_a0  = vx.subs([(x,a),(y,0.0)])
         #vy_0b  = vy.subs([(x,0.0),(y,b)])
         # ログの出力
-        print('w(0,0) =', w00, w00*4/3)
+        print('w(0,0) =', w00, w00*3/4)
         print('mx2=', mx2max)
         #print('my2=', my2_00/4)
         print('my2=', my2max)
@@ -1713,7 +1715,7 @@ class Higashi:
 
         #p = plot3d(-ww,(x,-a,a),(y,-b,b))
 
-        return mx2max,my2max,w00*4/3
+        return mx2max,my2max,w00*3/4
 
     # 2隣辺固定-2辺支持版
     # p118, 1型による解
@@ -1944,11 +1946,147 @@ class Higashi:
 
         return mx2max,my2max,w00*12
 
+    ########################################################################
+    # 2辺対辺固定2辺支持版
+    # p121, 5型による解
+    # 答えが合わない。
+    def m_1fix_3pin(self,lamda,nu,nmax,mmax):
+        # mmax はダミー
+        # 初期計算
+        pi = math.pi
+        a = 1.0
+        b = lamda * a
+        y = []
+        mx = []
+
+        for n in range(1,nmax+1):
+
+            beta = (2.0*n-1)/(2.0*b) * pi
+            beta_a = beta*a
+
+            #a1 = (-1.0)**n / a**2 / beta**3 / b
+            a1 = 2.0 * (-1.0)**n / a**2 / beta**3 / b \
+                * ( math.cosh(beta_a)-1.0 ) * ( math.sinh(beta_a) -1.0 ) \
+                / ( math.cosh(beta_a)*math.sinh(beta_a) - beta_a )
+
+            mx.append(a1)
+
+        mx_end = 0
+        my_end = 0
+        for n in range(1,nmax+1):
+            mx_end = mx_end + mx[n-1]
+
+        # print calculation log
+        print('# ', 'Solve, one side fix w/ three side pin plate')
+        print()
+        print('b/a =', lamda, 'nu=', nu)
+        print('nmax =', nmax, 'mmax = 0(No Need)')
+        print()
+        print('mx = ', mx)
+        print('mx1 = ', mx_end)
+        print('my1 = ', 0.0)
+        print()
+
+        # たわみ関数の呼び出
+        tmpData = self.w_1fix_3pin(lamda,nmax,mmax,mx,nu)
+        print( mx_end,tmpData[0],0.0,tmpData[1],tmpData[2] )
+        return mx_end,tmpData[0],0.0,tmpData[1],tmpData[2]
+
+    # w(x,y) difinition
+    # p120
+    ########################################################################
+    def w_1fix_3pin(self,lamda,nmax,mmax,mx,nu):
+
+        # lamda:         ly/lx
+        # nmax, mmax:    フーリエ級数の打ち切り
+        # mx:            [man(n=1,2,...nmax),mam(m=1,2,....mmax)]
+
+        # ２変数の定義
+        sym.var('x y', real = True)
+
+        # 初期条件
+        pi = math.pi
+        a = 1.0
+        b = lamda * a
+        #print("lamda",lamda)
+
+        # たわみ関数の計算
+        # 計算は w * (D/pa**4) を計算
+        ww = 0.0
+
+        for n in range(1,nmax+1):
+
+            beta = ( 2.0*n - 1.0 )/ (2.0*b) * pi
+            beta_a = beta*a
+
+            coef = ( beta_a * sym.coth(beta_a) * sym.sinh(beta*x) - beta*x * sym.cosh(beta*x) ) \
+                /2/sym.sinh(beta_a) * mx[n-1] / beta**2 / a**2 * sym.cos(beta*y)
+
+            ww = ww + coef
+
+        # 荷重項
+        for n in range(1,nmax+1):
+            for m in range(1,mmax+1):
+                alpha = m / a * pi
+                beta  = ( 2.0*n - 1.0 )/ (2.0*b) * pi
+
+                coef = 4.0/(a**5*b)
+                coef = coef * (1.0-(-1.0)**m) * (-1.0)**(n-1)
+                coef = coef/( alpha*beta* (alpha**2 + beta**2)**2 )
+                coef = coef * sym.sin(alpha*x) * sym.cos(beta*y)
+                ww = ww + coef
+
+        # 応力の計算
+        ## Bending Moment m/(p*a**2)
+        dwdx2 = sym.diff( ww, x, 2 )
+        dwdy2 = sym.diff( ww, y, 2 )
+        mx2 = -a**2* ( dwdx2 + nu * dwdy2 )
+        my2 = -a**2* ( dwdy2 + nu * dwdx2 )
+
+        mx2_x0 = mx2.subs(y,0)
+        my2_0y = my2.subs(x,0.5*a)
+
+        #print(mx2_x0)
+        mx2max = self.fxy_max(mx2_x0,50,0.00000001,a,"x")
+        my2max = self.fxy_max(my2_0y,50,0.00000001,b,"y")
+        #mx2max = 0.0
+        #my2max = 0.0
+
+        #self.func_max(my2)
+        """
+        ## Reaction force v/(p*a)
+        dwdx3   = sym.diff( ww, x, 3 )
+        dwdxdy2 = sym.diff( ww, x, y, 2)
+        dwdy3   = sym.diff( ww, y, 3 )
+        dwdydx2 = sym.diff( ww, x, 2, y )
+        vx      = -a**3 * ( dwdx3 + (2.0-nu) * dwdxdy2 )
+        vy      = -a**3 * ( dwdy3 + (2.0-nu) * dwdydx2 )
+        """
+        # 結果の整理
+        w00 = ww.subs([(x,0.5*a),(y,0.0)])
+        mx2_00 = mx2.subs([(x,0.0),(y,0.0)])
+        my2_00 = my2.subs([(x,0.0),(y,0.0)])
+        #mx2max = mx2_00/4
+
+        #vx_a0  = vx.subs([(x,a),(y,0.0)])
+        #vy_0b  = vy.subs([(x,0.0),(y,b)])
+        # ログの出力
+        print('w(0,0) =', w00, w00*12)
+        print('mx2=', mx2max)
+        #print('my2=', my2_00/4)
+        print('my2=', my2max)
+        #print('vx =', vx_a0/2)
+        #print('vy =', vy_0b/2)
+
+
+        #p = plot3d(-ww,(x,-a,a),(y,-b,b))
+
+        return mx2max,my2max,w00*12
 ########################################################################
 # End Class
 
 obj = Higashi()
-lamda = 1.0
+lamda = 5.0
 nu = 0.0
 nmax = 5
 mmax = 5
@@ -1958,6 +2096,7 @@ mmax = 5
 #obj.m_3fix_1pin(lamda,nu,nmax,mmax)
 #obj.m_2fix_2pin(lamda,nu,nmax,mmax)
 #obj.m_2nfix_2pin(lamda,nu,nmax,mmax)
+#obj.m_1fix_3pin(lamda,nu,nmax,mmax
 """
 # ２変数の定義
 sym.var('x y', real = True)

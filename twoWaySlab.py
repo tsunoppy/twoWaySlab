@@ -64,6 +64,10 @@ class MyFrame2(gui.MyFrame2):
             image_data = "./images/m2_2pin2.jpg"
         elif IdBound ==10: # 2辺固定2辺支持
             image_data = "./images/m2_2pin3.jpg"
+        elif IdBound ==11: # 短辺1辺固定3辺支持
+            image_data = "./images/m1-3pin1.jpg"
+        elif IdBound ==12: # 長辺1辺固定3辺支持
+            image_data = "./images/m1-3pin2.jpg"
         else:
             dlg = wx.MessageDialog(self, 'Bound, input Erro',
                                    'Bound Error',

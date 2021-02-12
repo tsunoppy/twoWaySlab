@@ -41,8 +41,8 @@ class Report():
             # txt
             c.drawString(300, 720-(i-1)*10 + y_shift, data[i])
         """
-        c.drawString(55, self.ypos(0,y_shift), data[0])
-        c.drawString(55, self.ypos(1,y_shift), data[1])
+        c.drawString(55, self.ypos(0,y_shift), data[0].encode('utf-8'))
+        c.drawString(55, self.ypos(1,y_shift), data[1].encode('utf-8'))
 
         # Slab Condition
         lx = "{:.2f}".format(float(data[2]))
@@ -224,6 +224,10 @@ class Report():
             image_data = "./images/m2_2pin2.jpg"
         elif index ==10: # 2辺固定2辺支持
             image_data = "./images/m2_2pin3.jpg"
+        elif IdBound ==11: # 短辺1辺固定3辺支持
+            image_data = "./images/m1-3pin1.jpg"
+        elif IdBound ==12: # 長辺1辺固定3辺支持
+            image_data = "./images/m1-3pin2.jpg"
         else:
             print("Error report/def")
 
