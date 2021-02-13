@@ -87,6 +87,23 @@ class MyFrame2(gui.MyFrame2):
         self.Clear_R()
 
     def Clear_R(self):
+        # Check ',' include or not
+        title = self.text_ctrl_title.GetValue()
+        subTitle = self.text_ctrl_subtitle.GetValue()
+        if ',' in title:
+            dlg = wx.MessageDialog(self, 'You can\'t input "," to title tab',
+                                   'Input Error',
+                                   wx.OK | wx.ICON_INFORMATION
+                                   )
+            dlg.ShowModal()
+            dlg.Destroy()
+        if ',' in subTitle:
+            dlg = wx.MessageDialog(self, 'You can\'t input "," to sub title tab',
+                                   'Input Error',
+                                   wx.OK | wx.ICON_INFORMATION
+                                   )
+            dlg.ShowModal()
+            dlg.Destroy()
         #
         self.text_ctrl_mx1.SetValue('')
         self.text_ctrl_mx2.SetValue('')
