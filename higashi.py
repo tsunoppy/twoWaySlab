@@ -1551,7 +1551,7 @@ class Higashi:
 
         # Preparation
         dx = (x2-x1)/ndim
-        print( " dx = ",dx)
+        print( " Search maximum value by x/a = dx = ",dx)
         #print(fxy)
 
         # Calculation
@@ -1566,7 +1566,7 @@ class Higashi:
                 if f >= fmax:
                     fmax = f
                     yp = yc
-            print("{:.2f}".format(yp/x2),"{:.5f}".format(fmax))
+            print(" y = {:.2f}".format(yp/x2),"mmax = {:.5f}".format(fmax))
 
         elif index == "x":
             for i in range(0,ndim+1):
@@ -1576,7 +1576,7 @@ class Higashi:
                 if f >= fmax:
                     fmax = f
                     xp = xc
-            print("{:.2f}".format(xp/x2),"{:.5f}".format(fmax))
+            print(" x = {:.2f}".format(xp/x2),"mmax = {:.5f}".format(fmax))
         else:
             print("Error fxy_max, please select index as 'x' or 'y' ")
 

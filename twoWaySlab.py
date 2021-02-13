@@ -308,7 +308,9 @@ class MyFrame2(gui.MyFrame2):
         sfy2   = data[36]
         defl   = data[37]
         dBySan = data[38]
+        # added
         ft     = data[39]
+        nu     = data[40]
 
         # Title
         self.text_ctrl_title.SetValue(title)
@@ -594,6 +596,8 @@ class MyFrame2(gui.MyFrame2):
         # add
         ft     = self.text_ctrl_ft.GetValue()
         data.append(ft)
+        nu     = 0.0
+        data.append(nu)
 
 
         ####################
@@ -764,6 +768,7 @@ class MyFrame2(gui.MyFrame2):
         """
         # add
         ft     = float( self.text_ctrl_ft.GetValue() )
+        nu     = 0.0
         #
         # Preparation Cal
         ########################################################################
@@ -777,7 +782,7 @@ class MyFrame2(gui.MyFrame2):
         ########################################################################
         ec = aijRc.Aij_rc_set().Ec(fc,gamma-1.0) # Young Modulus
         #ft = 195.0
-        nu = 0.0
+        #nu = 0.0
         # 応力
         IdBound = ind_bound
         #self.combo_box_bound.GetSelection()
