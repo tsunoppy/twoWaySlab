@@ -187,9 +187,16 @@ python3 ./twoWaySlab.py
 By power shell
 ``` DOS
 > pyinstaller main.py --onefile --noconsole --icon=icons/twoWay_Icon.ico
+> mv ./images ./dist/twoWaySlab/
+> mv ./fonts ./dist/twoWaySlab/
 > ./dist/twoWaySlab/twoWaySlab.exe
-> mv ./images ./dist/twoWaySlab/twoWaySlab.exe
-> mv ./fonts ./dist/twoWaySlab/twoWaySlab.exe
+```
+or
+``` DOS
+> pyinstaller twoWaySlab.spec
+> mv ./images ./dist/twoWaySlab/
+> mv ./fonts ./dist/twoWaySlab/
+> ./dist/twoWaySlab/twoWaySlab.exe
 ```
 
 Check Release, and click main/rigidWink.exe!
